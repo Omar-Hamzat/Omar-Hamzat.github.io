@@ -37,6 +37,13 @@ API is ever unreachable.
   repo, paste the URL there, and the button appears.
 - **Hiding a repo** — add its name to the `HIDDEN` set in `app.js`. Forks are hidden already.
 
+## After editing `styles.css` or `app.js`
+
+Bump the `?v=` number on both `<link>` and `<script>` tags in `index.html`.
+GitHub Pages tells browsers to cache assets for 10 minutes, so without this a
+returning visitor can load new HTML against a stale script for a few minutes
+after you push.
+
 ## Running it locally
 
 ```bash

@@ -15,7 +15,9 @@
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
   <link rel="preconnect" href="https://api.github.com">
-  <link rel="stylesheet" href="styles.css">
+  <!-- Bump ?v= on every styles.css / app.js change so returning visitors don't
+       run a stale copy out of browser cache. -->
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
   <a class="skip-link" href="#projects">Skip to projects</a>
@@ -167,6 +169,6 @@
     <button class="to-top" id="to-top" type="button" aria-label="Back to top">↑</button>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>
