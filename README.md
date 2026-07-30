@@ -21,11 +21,29 @@ API is ever unreachable.
 | `app.js` | GitHub fetch, search/filter/sort, theme toggle, animations |
 | `.vscode/` | Editor settings, tasks and debug config (committed on purpose) |
 | `tools/` | Two small maintenance scripts — see the VS Code section |
+| `assets/` | Where `portrait.jpg` goes — see `assets/README.md` |
+
+## The design
+
+Technical/engineered: IBM Plex Mono for labels, headings and numbers, IBM Plex
+Sans for prose. Warm paper and ink rather than the usual navy. Square corners,
+2px rules, hard offset shadows on hover, and a faint graph-paper grid on the
+background. No gradients, no blur, no border-radius anywhere — if you add
+something, keep it that way or it'll look bolted on.
+
+Both light and dark palettes are defined as CSS custom properties at the top of
+`styles.css`. The toggle is labelled with the theme it switches *to*.
 
 ## Editing it
 
+- **Your photo** — save it as `assets/portrait.jpg` and it appears at the top of the
+  About section. Until then a dashed placeholder shows. Details in `assets/README.md`.
 - **About text, tagline, skills** — in `index.html`. The About paragraph is marked with an `EDIT ME` comment.
-- **Colours** — the `:root` block at the top of `styles.css`; `--accent` and `--accent-2` drive most of the look.
+- **The identity table** (Name / Role / Focus / Status / Links, beside the photo) — also `index.html`,
+  in the `.id-table` block. Add or remove `.id-row` entries freely; they redistribute
+  to match the photo's height.
+- **Colours and type** — the `:root` block at the top of `styles.css`. `--accent`
+  is the single signal colour; `--paper` and `--ink` carry everything else.
 - **Project descriptions** — most repos have no description on GitHub, so `app.js`
   has an `OVERRIDES` map keyed by lowercase repo name. Add an entry there, or (better)
   set the description on the repo itself on GitHub and it'll be picked up automatically.

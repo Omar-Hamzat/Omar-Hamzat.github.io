@@ -166,9 +166,12 @@ function cardHtml(repo, index) {
   else if (repo.archived) badge = 'Archived';
   else if (isNew) badge = 'New';
 
+  const num = String(index + 1).padStart(3, '0');
+
   return `
-    <article class="card${repo.featured ? ' is-featured' : ''}" style="animation-delay:${Math.min(index * 55, 400)}ms">
+    <article class="card${repo.featured ? ' is-featured' : ''}" style="animation-delay:${Math.min(index * 45, 320)}ms">
       <div class="card-head">
+        <span class="card-num" aria-hidden="true">${num}</span>
         <h3 class="card-title">
           <a href="${repo.html_url}" target="_blank" rel="noopener">${escapeHtml(prettyName(repo))}</a>
         </h3>
@@ -180,14 +183,13 @@ function cardHtml(repo, index) {
 
       <div class="card-meta">
         ${repo.language ? `<span><i class="lang-dot" style="background:${color}"></i>${escapeHtml(repo.language)}</span>` : ''}
-        <span title="Stars">★ ${repo.stargazers_count}</span>
         ${repo.forks_count ? `<span title="Forks">⑂ ${repo.forks_count}</span>` : ''}
-        <span title="Last push">Updated ${timeAgo(repo.pushed_at || repo.updated_at)}</span>
+        <span title="Last push">Upd. ${timeAgo(repo.pushed_at || repo.updated_at)}</span>
       </div>
 
       <div class="card-links">
-        <a class="card-link primary" href="${repo.html_url}" target="_blank" rel="noopener">View code</a>
-        ${demo ? `<a class="card-link" href="${demo}" target="_blank" rel="noopener">Live demo ↗</a>` : ''}
+        <a class="card-link primary" href="${repo.html_url}" target="_blank" rel="noopener">View code &rarr;</a>
+        ${demo ? `<a class="card-link" href="${demo}" target="_blank" rel="noopener">Live demo &rarr;</a>` : ''}
       </div>
     </article>`;
 }
@@ -213,7 +215,6 @@ function visibleRepos() {
       // Featured projects lead, whatever the chosen sort.
       if (!!a.featured !== !!b.featured) return a.featured ? -1 : 1;
       switch (state.sort) {
-        case 'stars':   return b.stargazers_count - a.stargazers_count;
         case 'name':    return prettyName(a).localeCompare(prettyName(b));
         case 'created': return new Date(b.created_at) - new Date(a.created_at);
         default:        return new Date(b.pushed_at || b.updated_at) - new Date(a.pushed_at || a.updated_at);
@@ -230,10 +231,8 @@ function renderGrid() {
   $('#empty-state').hidden = list.length > 0;
 
   count.textContent = list.length
-    ? `Showing ${list.length} of ${state.repos.length} project${state.repos.length === 1 ? '' : 's'}`
+    ? `${list.length} of ${state.repos.length} shown`
     : '';
-
-  attachCardGlow();
 }
 
 function renderFilters() {
@@ -281,18 +280,6 @@ function renderStats() {
   countUp($('#stat-langs'), langs);
 }
 
-/* Cursor-following glow on each card. */
-function attachCardGlow() {
-  if (window.matchMedia('(hover: none)').matches) return;
-  document.querySelectorAll('.card').forEach((card) => {
-    card.addEventListener('pointermove', (e) => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
-      card.style.setProperty('--my', `${e.clientY - r.top}px`);
-    });
-  });
-}
-
 /* ------------------------------------------------------------
    Theme
    ------------------------------------------------------------ */
@@ -307,35 +294,20 @@ function initTheme() {
   });
 }
 
+/* The button is labelled with the theme it switches TO. */
 function setTheme(theme) {
+  const next = theme === 'dark' ? 'light' : 'dark';
   document.documentElement.dataset.theme = theme;
   localStorage.setItem('theme', theme);
-  $('#theme-toggle').setAttribute(
-    'aria-label',
-    `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`
-  );
+
+  const btn = $('#theme-toggle');
+  btn.setAttribute('aria-label', `Switch to ${next} theme`);
+  btn.querySelector('.theme-label').textContent = next === 'dark' ? 'Dark' : 'Light';
 }
 
 /* ------------------------------------------------------------
    Misc interactions
    ------------------------------------------------------------ */
-
-function initReveal() {
-  const items = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    items.forEach((el) => el.classList.add('is-visible'));
-    return;
-  }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  items.forEach((el) => io.observe(el));
-}
 
 function initControls() {
   let debounce;
@@ -375,7 +347,6 @@ function initControls() {
 async function main() {
   $('#year').textContent = new Date().getFullYear();
   initTheme();
-  initReveal();
   initControls();
 
   const { repos, stale } = await loadRepos();

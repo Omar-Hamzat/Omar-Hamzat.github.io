@@ -1,92 +1,126 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Omar Hamzat — Developer Portfolio</title>
+  <title>Omar Hamzat — Software Developer</title>
   <meta name="description" content="Portfolio of Omar Hamzat — software developer working across robotics, ROS 2, backend Java and the web.">
-  <meta name="color-scheme" content="dark light">
+  <meta name="color-scheme" content="light dark">
 
   <!-- Social preview -->
-  <meta property="og:title" content="Omar Hamzat — Developer Portfolio">
+  <meta property="og:title" content="Omar Hamzat — Software Developer">
   <meta property="og:description" content="Software developer working across robotics, ROS 2, backend Java and the web.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/114343286?v=4">
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%2314120f'/><text x='50' y='50' dy='.35em' text-anchor='middle' font-family='monospace' font-size='50' font-weight='700' fill='%23ff4d1c'>OH</text></svg>">
+
   <link rel="preconnect" href="https://api.github.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- Bump ?v= on every styles.css / app.js change so returning visitors don't
-       run a stale copy out of browser cache. -->
-  <link rel="stylesheet" href="styles.css?v=4">
+       run a stale copy out of browser cache. Task: "Bump asset cache version". -->
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
-  <a class="skip-link" href="#projects">Skip to projects</a>
-
-  <!-- Decorative background -->
-  <div class="bg-glow" aria-hidden="true"></div>
+  <a class="skip-link" href="#projects">Skip to work</a>
 
   <header class="site-header">
     <a class="brand" href="#top">
       <span class="brand-mark">OH</span>
-      <span class="brand-name">Omar Hamzat</span>
+      <span class="brand-name">omar-hamzat</span>
     </a>
     <nav class="site-nav" aria-label="Main">
       <a href="#about">About</a>
-      <a href="#projects">Projects</a>
+      <a href="#projects">Work</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light theme">
-      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme">
+      <span class="theme-label" aria-hidden="true">Dark</span>
     </button>
   </header>
 
   <main id="top">
     <!-- ===== Hero ===== -->
     <section class="hero">
-      <div class="hero-text reveal">
-        <p class="eyebrow">Software Developer</p>
-        <h1>Hi, I'm <span class="grad">Omar Hamzat</span>.</h1>
-        <p class="lede">
-          I build software across robotics, backend and the web — from a real-time
-          autonomous-driving perception system to full-stack Java applications.
-          Most of what's below is pulled live from my GitHub.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#projects">View my projects</a>
-          <a class="btn btn-ghost" href="https://github.com/Omar-Hamzat" target="_blank" rel="noopener">
-            GitHub <span aria-hidden="true">↗</span>
-          </a>
-        </div>
+      <p class="eyebrow">Software Developer &mdash; Robotics / Backend / Web</p>
+      <h1 class="hero-title">Omar<br>Hamzat</h1>
+      <p class="lede">
+        I build software across robotics, backend and the web &mdash; from a real-time
+        autonomous-driving perception system to full-stack Java applications.
+        Most of what&rsquo;s below is pulled live from my GitHub.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#projects">See the work</a>
+        <a class="btn" href="https://github.com/Omar-Hamzat" target="_blank" rel="noopener">GitHub</a>
       </div>
 
-      <div class="hero-card reveal">
-        <img class="avatar" src="https://avatars.githubusercontent.com/u/114343286?v=4"
-             alt="Omar Hamzat" width="96" height="96" loading="eager">
-        <div class="stats" id="stats">
-          <div class="stat"><span class="stat-num" data-count="0" id="stat-repos">—</span><span class="stat-label">Projects</span></div>
-          <div class="stat"><span class="stat-num" data-count="0" id="stat-langs">—</span><span class="stat-label">Languages</span></div>
+      <dl class="spec-strip">
+        <div class="spec">
+          <dt>Projects</dt>
+          <dd id="stat-repos">&mdash;</dd>
         </div>
-      </div>
+        <div class="spec">
+          <dt>Languages</dt>
+          <dd id="stat-langs">&mdash;</dd>
+        </div>
+        <div class="spec">
+          <dt>On GitHub since</dt>
+          <dd>2022</dd>
+        </div>
+      </dl>
     </section>
 
     <!-- ===== About ===== -->
-    <section id="about" class="section reveal">
-      <h2 class="section-title"><span class="num">01</span> About</h2>
+    <section id="about" class="section">
+      <h2 class="section-head"><span>About</span></h2>
+
+      <!-- PORTRAIT SLOT
+           Drop a photo of yourself at assets/portrait.jpg and it appears here.
+           Square or 4:5 portrait crop, at least 600px on the short edge.
+           Until the file exists, a labelled placeholder shows instead. -->
+      <div class="identity">
+        <figure class="portrait" id="portrait">
+          <img src="assets/portrait.jpg" alt="Omar Hamzat"
+               width="640" height="800" loading="lazy"
+               onerror="this.hidden=true;document.getElementById('portrait').classList.add('is-empty');">
+          <figcaption>Omar Hamzat &mdash; Developer</figcaption>
+        </figure>
+
+        <dl class="id-table">
+          <div class="id-row"><dt>Name</dt><dd>Omar Hamzat</dd></div>
+          <div class="id-row"><dt>Role</dt><dd>Software Developer</dd></div>
+          <div class="id-row"><dt>Focus</dt><dd>Robotics &middot; Computer Vision &middot; Backend</dd></div>
+          <div class="id-row">
+            <dt>Status</dt>
+            <dd><span class="status-dot" aria-hidden="true"></span>Open to internships &amp; junior roles</dd>
+          </div>
+          <div class="id-row">
+            <dt>Links</dt>
+            <dd>
+              <a href="https://github.com/Omar-Hamzat" target="_blank" rel="noopener">GitHub</a>
+              <span class="sep" aria-hidden="true">/</span>
+              <a href="https://www.linkedin.com/in/omar-hamzat-144571264/" target="_blank" rel="noopener">LinkedIn</a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
       <div class="about-grid">
         <!-- EDIT ME: rewrite this paragraph in your own voice. -->
         <p class="about-body">
-          I'm a developer who likes turning ideas into things people can actually use.
-          My work spans robotics and computer vision — I handled the <strong>ROS 2</strong>
+          I&rsquo;m a developer who likes turning ideas into things people can actually use.
+          My work spans robotics and computer vision &mdash; I handled the <strong>ROS 2</strong>
           integration on <strong>CUVision</strong>, a real-time autonomous-driving
-          perception system — as well as backend development in <strong>Java</strong> and
+          perception system &mdash; as well as backend development in <strong>Java</strong> and
           front-end builds with <strong>JavaScript</strong>, <strong>HTML</strong> and
-          <strong>CSS</strong>. I'm most interested in writing clean, readable code and
-          shipping projects end-to-end rather than leaving them half-finished. Currently
-          open to internships and junior developer roles.
+          <strong>CSS</strong>. I&rsquo;m most interested in writing clean, readable code and
+          shipping projects end-to-end rather than leaving them half-finished.
         </p>
         <div class="skills">
-          <h3 class="skills-title">Tech I work with</h3>
+          <h3 class="skills-title">Tech</h3>
           <ul class="tag-list">
             <li class="tag">Java</li>
             <li class="tag">Python</li>
@@ -94,26 +128,24 @@
             <li class="tag">JavaScript</li>
             <li class="tag">HTML5</li>
             <li class="tag">CSS3</li>
-            <li class="tag">Git &amp; GitHub</li>
+            <li class="tag">Git</li>
             <li class="tag">REST APIs</li>
-            <li class="tag">Responsive Design</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- ===== Projects ===== -->
+    <!-- ===== Work ===== -->
     <section id="projects" class="section">
-      <h2 class="section-title reveal"><span class="num">02</span> Projects</h2>
-      <p class="section-sub reveal">
-        Fetched live from the GitHub API — this list updates itself whenever I push a new repo.
+      <h2 class="section-head"><span>Selected work</span></h2>
+      <p class="section-sub">
+        Pulled live from the GitHub API &mdash; this index updates itself whenever I push a new repo.
       </p>
 
-      <div class="controls reveal">
+      <div class="controls">
         <div class="search-wrap">
-          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>
-          <input id="search" type="search" placeholder="Search projects…" aria-label="Search projects" autocomplete="off">
-          <kbd class="kbd-hint" aria-hidden="true">/</kbd>
+          <span class="search-prefix" aria-hidden="true">/</span>
+          <input id="search" type="search" placeholder="filter&hellip;" aria-label="Search projects" autocomplete="off">
         </div>
         <div class="filters" id="filters" role="group" aria-label="Filter by language"></div>
         <label class="sort-wrap">
@@ -121,8 +153,7 @@
           <select id="sort" aria-label="Sort projects">
             <option value="updated">Recently updated</option>
             <option value="created">Newest</option>
-            <option value="stars">Most stars</option>
-            <option value="name">Name (A–Z)</option>
+            <option value="name">Name (A&ndash;Z)</option>
           </select>
         </label>
       </div>
@@ -137,38 +168,47 @@
         <div class="card skeleton" aria-hidden="true"></div>
       </div>
 
-      <p id="empty-state" class="empty-state" hidden>No projects match that search.</p>
+      <p id="empty-state" class="empty-state" hidden>No projects match that filter.</p>
       <p id="error-state" class="error-state" hidden></p>
     </section>
 
     <!-- ===== Contact ===== -->
-    <section id="contact" class="section reveal">
-      <h2 class="section-title"><span class="num">03</span> Contact</h2>
+    <section id="contact" class="section">
+      <h2 class="section-head"><span>Contact</span></h2>
       <p class="section-sub">Happy to talk about work, collaboration, or anything you saw above.</p>
-      <div class="contact-links">
-        <a class="contact-card" href="mailto:amorhamzat@gmail.com">
-          <span class="contact-icon" aria-hidden="true">✉</span>
-          <span class="contact-meta"><strong>Email</strong><span>amorhamzat@gmail.com</span></span>
-        </a>
-        <a class="contact-card" href="https://www.linkedin.com/in/omar-hamzat-144571264/" target="_blank" rel="noopener">
-          <span class="contact-icon" aria-hidden="true">in</span>
-          <span class="contact-meta"><strong>LinkedIn</strong><span>omar-hamzat</span></span>
-        </a>
-        <a class="contact-card" href="https://github.com/Omar-Hamzat" target="_blank" rel="noopener">
-          <span class="contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 16 16" width="18" height="18"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.71 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.83-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.52.56.83 1.28.83 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-          </span>
-          <span class="contact-meta"><strong>GitHub</strong><span>@Omar-Hamzat</span></span>
-        </a>
-      </div>
+
+      <ul class="contact-list">
+        <li>
+          <a class="contact-row" href="mailto:amorhamzat@gmail.com">
+            <span class="contact-key">Email</span>
+            <span class="contact-val">amorhamzat@gmail.com</span>
+            <span class="contact-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+        <li>
+          <a class="contact-row" href="https://www.linkedin.com/in/omar-hamzat-144571264/" target="_blank" rel="noopener">
+            <span class="contact-key">LinkedIn</span>
+            <span class="contact-val">omar-hamzat</span>
+            <span class="contact-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+        <li>
+          <a class="contact-row" href="https://github.com/Omar-Hamzat" target="_blank" rel="noopener">
+            <span class="contact-key">GitHub</span>
+            <span class="contact-val">@Omar-Hamzat</span>
+            <span class="contact-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+      </ul>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>© <span id="year"></span> Omar Hamzat · Built with vanilla HTML, CSS &amp; JS · Hosted on GitHub Pages</p>
-    <button class="to-top" id="to-top" type="button" aria-label="Back to top">↑</button>
+    <p>&copy; <span id="year"></span> Omar Hamzat</p>
+    <p class="footer-note">Hand-written HTML, CSS &amp; JS &middot; GitHub Pages</p>
+    <button class="to-top" id="to-top" type="button" aria-label="Back to top">&uarr; Top</button>
   </footer>
 
-  <script src="app.js?v=4"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>
