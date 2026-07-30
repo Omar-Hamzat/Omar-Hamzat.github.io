@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omar Hamzat — Developer Portfolio</title>
+  <meta name="description" content="Portfolio of Omar Hamzat — software developer building web and Java applications.">
+  <meta name="color-scheme" content="dark light">
+
+  <!-- Social preview -->
+  <meta property="og:title" content="Omar Hamzat — Developer Portfolio">
+  <meta property="og:description" content="Software developer building web and Java applications.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/114343286?v=4">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="preconnect" href="https://api.github.com">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#projects">Skip to projects</a>
+
+  <!-- Decorative background -->
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top">
+      <span class="brand-mark">OH</span>
+      <span class="brand-name">Omar Hamzat</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+    </button>
+  </header>
+
+  <main id="top">
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <div class="hero-text reveal">
+        <p class="eyebrow">Software Developer</p>
+        <h1>Hi, I'm <span class="grad">Omar Hamzat</span>.</h1>
+        <p class="lede">
+          I build web and Java applications — from full-stack e-commerce systems to
+          interactive front-end tools. Everything below is pulled live from my GitHub.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#projects">View my projects</a>
+          <a class="btn btn-ghost" href="https://github.com/Omar-Hamzat" target="_blank" rel="noopener">
+            GitHub <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-card reveal">
+        <img class="avatar" src="https://avatars.githubusercontent.com/u/114343286?v=4"
+             alt="Omar Hamzat" width="96" height="96" loading="eager">
+        <div class="stats" id="stats">
+          <div class="stat"><span class="stat-num" data-count="0" id="stat-repos">—</span><span class="stat-label">Repositories</span></div>
+          <div class="stat"><span class="stat-num" data-count="0" id="stat-stars">—</span><span class="stat-label">Stars earned</span></div>
+          <div class="stat"><span class="stat-num" data-count="0" id="stat-langs">—</span><span class="stat-label">Languages</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== About ===== -->
+    <section id="about" class="section reveal">
+      <h2 class="section-title"><span class="num">01</span> About</h2>
+      <div class="about-grid">
+        <!-- EDIT ME: rewrite this paragraph in your own voice. -->
+        <p class="about-body">
+          I'm a developer who likes turning ideas into things people can actually click.
+          My projects span backend work in <strong>Java</strong> and front-end builds with
+          <strong>JavaScript</strong>, <strong>HTML</strong> and <strong>CSS</strong> — an
+          e-commerce application, a fitness tracker, a live finance news ticker, and a
+          browser game. I'm most interested in writing clean, readable code and shipping
+          projects end-to-end rather than leaving them half-finished. Currently open to
+          internships and junior developer roles.
+        </p>
+        <div class="skills">
+          <h3 class="skills-title">Tech I work with</h3>
+          <ul class="tag-list">
+            <li class="tag">Java</li>
+            <li class="tag">JavaScript</li>
+            <li class="tag">HTML5</li>
+            <li class="tag">CSS3</li>
+            <li class="tag">Git &amp; GitHub</li>
+            <li class="tag">REST APIs</li>
+            <li class="tag">Responsive Design</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Projects ===== -->
+    <section id="projects" class="section">
+      <h2 class="section-title reveal"><span class="num">02</span> Projects</h2>
+      <p class="section-sub reveal">
+        Fetched live from the GitHub API — this list updates itself whenever I push a new repo.
+      </p>
+
+      <div class="controls reveal">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>
+          <input id="search" type="search" placeholder="Search projects…" aria-label="Search projects" autocomplete="off">
+          <kbd class="kbd-hint" aria-hidden="true">/</kbd>
+        </div>
+        <div class="filters" id="filters" role="group" aria-label="Filter by language"></div>
+        <label class="sort-wrap">
+          <span class="sr-only">Sort projects</span>
+          <select id="sort" aria-label="Sort projects">
+            <option value="updated">Recently updated</option>
+            <option value="created">Newest</option>
+            <option value="stars">Most stars</option>
+            <option value="name">Name (A–Z)</option>
+          </select>
+        </label>
+      </div>
+
+      <p class="result-count" id="result-count" role="status" aria-live="polite"></p>
+
+      <div id="project-grid" class="project-grid">
+        <!-- Skeletons while loading -->
+        <div class="card skeleton" aria-hidden="true"></div>
+        <div class="card skeleton" aria-hidden="true"></div>
+        <div class="card skeleton" aria-hidden="true"></div>
+        <div class="card skeleton" aria-hidden="true"></div>
+      </div>
+
+      <p id="empty-state" class="empty-state" hidden>No projects match that search.</p>
+      <p id="error-state" class="error-state" hidden></p>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section id="contact" class="section reveal">
+      <h2 class="section-title"><span class="num">03</span> Contact</h2>
+      <p class="section-sub">Happy to talk about work, collaboration, or anything you saw above.</p>
+      <div class="contact-links">
+        <a class="contact-card" href="mailto:amorhamzat@gmail.com">
+          <span class="contact-icon" aria-hidden="true">✉</span>
+          <span class="contact-meta"><strong>Email</strong><span>amorhamzat@gmail.com</span></span>
+        </a>
+        <a class="contact-card" href="https://www.linkedin.com/in/omar-hamzat-144571264/" target="_blank" rel="noopener">
+          <span class="contact-icon" aria-hidden="true">in</span>
+          <span class="contact-meta"><strong>LinkedIn</strong><span>omar-hamzat</span></span>
+        </a>
+        <a class="contact-card" href="https://github.com/Omar-Hamzat" target="_blank" rel="noopener">
+          <span class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="18" height="18"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.71 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.83-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.52.56.83 1.28.83 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          </span>
+          <span class="contact-meta"><strong>GitHub</strong><span>@Omar-Hamzat</span></span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Omar Hamzat · Built with vanilla HTML, CSS &amp; JS · Hosted on GitHub Pages</p>
+    <button class="to-top" id="to-top" type="button" aria-label="Back to top">↑</button>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
