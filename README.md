@@ -27,6 +27,11 @@ API is ever unreachable.
 - **Project descriptions** — most repos have no description on GitHub, so `app.js`
   has an `OVERRIDES` map keyed by lowercase repo name. Add an entry there, or (better)
   set the description on the repo itself on GitHub and it'll be picked up automatically.
+- **Team projects I don't own** — repos under someone else's account never come back
+  from the API, so they go in the `EXTRA_PROJECTS` array in `app.js` by hand. Each entry
+  takes `title`, `desc`, `role` (rendered as a quoted line describing my contribution),
+  `badge`, and `featured: true` to pin it to the top of the grid regardless of the
+  chosen sort. Copy the CUVision entry as a template.
 - **Live demo buttons** — a card shows a "Live demo" button when that repo has a
   **Website / homepage** URL set in its GitHub sidebar. Enable Pages on a project
   repo, paste the URL there, and the button appears.

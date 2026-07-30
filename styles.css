@@ -306,6 +306,23 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
 .card-desc { color: var(--text-dim); font-size: .9rem; margin: 0 0 1rem; flex: 1; }
 .card-desc.is-placeholder { color: var(--text-faint); font-style: italic; }
 
+/* My contribution on team projects */
+.card-role {
+  font-size: .82rem; color: var(--text-dim); margin: 0 0 1rem;
+  padding-left: .75rem; border-left: 2px solid var(--accent-2);
+}
+
+/* Featured card leads the grid and spans two columns where there's room */
+.card.is-featured { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+.card.is-featured .card-badge {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff;
+}
+@media (min-width: 700px) {
+  .card.is-featured { grid-column: span 2; }
+  .card.is-featured .card-desc { font-size: .96rem; }
+  .card.is-featured .card-links { max-width: 24rem; }
+}
+
 .card-meta {
   display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
   font-size: .78rem; color: var(--text-faint); margin-bottom: 1rem;

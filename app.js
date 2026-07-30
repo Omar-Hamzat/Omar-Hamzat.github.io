@@ -34,6 +34,30 @@ const OVERRIDES = {
   }
 };
 
+/* Projects that don't live under my own account (team repos, capstones) and so
+   never come back from the API call above. Same shape as a GitHub repo object,
+   plus `title`, `desc`, `role` and `badge`. Add to this list by hand. */
+const EXTRA_PROJECTS = [
+  {
+    name: 'capstone-CUVision-master',
+    title: 'CUVision — Autonomous Driving Perception',
+    desc: 'A real-time perception stack for self-driving: road and lane segmentation plus traffic-sign recognition, running end-to-end against live camera feeds and the CARLA simulator.',
+    role: 'My role: ROS 2 integration — wiring the perception models into a multi-node real-time pipeline.',
+    badge: 'Capstone',
+    featured: true,
+    language: 'Python',
+    html_url: 'https://github.com/anochronos/capstone-CUVision-master',
+    homepage: null,
+    stargazers_count: 0,
+    forks_count: 0,
+    topics: ['ros2', 'computer-vision', 'autonomous-driving', 'pytorch', 'yolo', 'carla', 'segmentation'],
+    created_at: '2026-04-22T04:58:49Z',
+    pushed_at: '2026-04-22T05:13:49Z',
+    fork: false,
+    archived: false
+  }
+];
+
 /* Minimal offline snapshot so the page is never empty. */
 const FALLBACK = [
   { name: 'E-Commerce-Application', description: null, language: 'Java', stargazers_count: 0, forks_count: 0, html_url: `https://github.com/${USERNAME}/E-Commerce-Application`, homepage: null, pushed_at: '2026-06-09T01:26:59Z', created_at: '2026-03-09T15:07:11Z', topics: [], fork: false, archived: false },
@@ -108,6 +132,7 @@ function timeAgo(iso) {
 }
 
 function prettyName(repo) {
+  if (repo.title) return repo.title;
   const o = OVERRIDES[repo.name.toLowerCase()];
   if (o?.title) return o.title;
   return repo.name.replace(/[-_]+/g, ' ')
@@ -117,6 +142,7 @@ function prettyName(repo) {
 }
 
 function description(repo) {
+  if (repo.desc) return { text: repo.desc, placeholder: false };
   const o = OVERRIDES[repo.name.toLowerCase()];
   if (repo.description) return { text: repo.description, placeholder: false };
   if (o?.desc) return { text: o.desc, placeholder: false };
@@ -135,17 +161,22 @@ function cardHtml(repo, index) {
   const demo = demoUrl(repo);
   const isNew = Date.now() - new Date(repo.created_at) < 90 * 86400000;
 
+  let badge = '';
+  if (repo.badge) badge = repo.badge;
+  else if (repo.archived) badge = 'Archived';
+  else if (isNew) badge = 'New';
+
   return `
-    <article class="card" style="animation-delay:${Math.min(index * 55, 400)}ms">
+    <article class="card${repo.featured ? ' is-featured' : ''}" style="animation-delay:${Math.min(index * 55, 400)}ms">
       <div class="card-head">
         <h3 class="card-title">
           <a href="${repo.html_url}" target="_blank" rel="noopener">${escapeHtml(prettyName(repo))}</a>
         </h3>
-        ${isNew ? '<span class="card-badge">New</span>' : ''}
-        ${repo.archived ? '<span class="card-badge">Archived</span>' : ''}
+        ${badge ? `<span class="card-badge">${escapeHtml(badge)}</span>` : ''}
       </div>
 
       <p class="card-desc${placeholder ? ' is-placeholder' : ''}">${escapeHtml(text)}</p>
+      ${repo.role ? `<p class="card-role">${escapeHtml(repo.role)}</p>` : ''}
 
       <div class="card-meta">
         ${repo.language ? `<span><i class="lang-dot" style="background:${color}"></i>${escapeHtml(repo.language)}</span>` : ''}
@@ -173,11 +204,14 @@ function visibleRepos() {
     .filter((r) => {
       if (state.lang !== 'All' && r.language !== state.lang) return false;
       if (!q) return true;
-      const haystack = [r.name, r.description, r.language, ...(r.topics || []), description(r).text]
+      const haystack = [r.name, prettyName(r), r.description, r.language, r.role,
+                        ...(r.topics || []), description(r).text]
         .filter(Boolean).join(' ').toLowerCase();
       return haystack.includes(q);
     })
     .sort((a, b) => {
+      // Featured projects lead, whatever the chosen sort.
+      if (!!a.featured !== !!b.featured) return a.featured ? -1 : 1;
       switch (state.sort) {
         case 'stars':   return b.stargazers_count - a.stargazers_count;
         case 'name':    return prettyName(a).localeCompare(prettyName(b));
@@ -346,7 +380,11 @@ async function main() {
 
   const { repos, stale } = await loadRepos();
 
-  state.repos = repos.filter((r) => !r.fork && !HIDDEN.has(r.name.toLowerCase()));
+  const mine = repos.filter((r) => !r.fork && !HIDDEN.has(r.name.toLowerCase()));
+  const extraNames = new Set(EXTRA_PROJECTS.map((r) => r.name.toLowerCase()));
+
+  // Curated entries win if a repo of the same name ever shows up under my account.
+  state.repos = [...EXTRA_PROJECTS, ...mine.filter((r) => !extraNames.has(r.name.toLowerCase()))];
 
   renderStats();
   renderFilters();
