@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Bump asset cache version",
+      "detail": "Increments ?v= on styles.css and app.js in index.html. Run before committing a change to either file.",
+      "type": "process",
+      "command": "python",
+      "args": ["tools/bump_assets.py"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Serve site (Python)",
+      "detail": "Plain HTTP server on port 4321. Live Server (Alt+L Alt+O) is usually nicer — it auto-reloads.",
+      "type": "process",
+      "command": "python",
+      "args": ["-m", "http.server", "4321"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Check what's deployed",
+      "detail": "Fetches the live site and prints the asset version GitHub Pages is currently serving.",
+      "type": "process",
+      "command": "python",
+      "args": ["tools/check_deployed.py"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    }
+  ]
+}

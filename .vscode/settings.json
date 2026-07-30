@@ -1,0 +1,28 @@
+{
+  // Live Server: opens the site at http://127.0.0.1:5500 with auto-reload on save.
+  "liveServer.settings.port": 5500,
+  "liveServer.settings.root": "/",
+  "liveServer.settings.CustomBrowser": "chrome",
+  "liveServer.settings.donotShowInfoMsg": true,
+
+  // Commit LF so GitHub Pages and git stop warning about line endings.
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  // This project is hand-written CSS/JS with deliberate formatting — don't
+  // reformat whole files on save. Format a selection manually if you want to.
+  "editor.formatOnSave": false,
+
+  "editor.rulers": [100],
+  "editor.linkedEditing": true,
+  "emmet.triggerExpansionOnTab": true,
+
+  "files.exclude": {
+    "**/.git": true,
+    "**/__pycache__": true
+  },
+
+  // Nudge: these are the files that need a ?v= bump when changed.
+  "todo-tree.general.tags": ["EDIT ME"]
+}
