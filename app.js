@@ -242,10 +242,8 @@ function countUp(el, target) {
 }
 
 function renderStats() {
-  const stars = state.repos.reduce((sum, r) => sum + r.stargazers_count, 0);
   const langs = new Set(state.repos.map((r) => r.language).filter(Boolean)).size;
   countUp($('#stat-repos'), state.repos.length);
-  countUp($('#stat-stars'), stars);
   countUp($('#stat-langs'), langs);
 }
 
