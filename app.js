@@ -55,6 +55,22 @@ const EXTRA_PROJECTS = [
     pushed_at: '2026-04-22T05:13:49Z',
     fork: false,
     archived: false
+  },
+  {
+    name: 'SYSC4806A-project-Group-38',
+    title: 'Perk Manager',
+    desc: 'A full-stack Spring Boot web app for discovering and sharing membership perks across Canadian reward programs — authentication, HTMX-driven search and filtering, community voting and a REST API, deployed to Azure through GitHub Actions.',
+    role: 'Built with a team of five; server-rendered Thymeleaf front end over a Spring Data JPA back end.',
+    language: 'Java',
+    html_url: 'https://github.com/JadHamzeh/SYSC4806A-project-Group-38',
+    homepage: 'https://sysc4806group38assignment-hvesg2fhasdtb5aj.canadacentral-01.azurewebsites.net/',
+    stargazers_count: 1,
+    forks_count: 0,
+    topics: ['spring-boot', 'java', 'thymeleaf', 'htmx', 'spring-security', 'jpa', 'maven', 'docker', 'azure', 'rest-api', 'full-stack'],
+    created_at: '2025-10-29T19:17:33Z',
+    pushed_at: '2026-05-29T14:00:44Z',
+    fork: false,
+    archived: false
   }
 ];
 
