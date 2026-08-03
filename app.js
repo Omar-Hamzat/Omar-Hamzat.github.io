@@ -7,8 +7,14 @@
 
 const USERNAME = 'Omar-Hamzat';
 const API = `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=updated`;
-const CACHE_KEY = 'gh-repos-v1';
+const CACHE_KEY = 'gh-repos-v2'; // v2: entries now carry a `languages` array
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour — keeps us well inside the 60 req/hr limit
+
+/* Cards list every language that makes up a real share of the repo, biggest
+   first. The threshold keeps a stray config file or one-line script out of the
+   list; the top language is always kept, however small the repo. */
+const MAX_LANGS = 4;
+const LANG_MIN_SHARE = 0.05;
 
 /* Repos to hide from the grid (e.g. the portfolio repo itself). */
 const HIDDEN = new Set([`${USERNAME.toLowerCase()}.github.io`]);
@@ -46,6 +52,7 @@ const EXTRA_PROJECTS = [
     badge: 'Capstone',
     featured: true,
     language: 'Python',
+    languages: ['Python'],
     html_url: 'https://github.com/anochronos/capstone-CUVision-master',
     homepage: null,
     stargazers_count: 0,
@@ -62,6 +69,7 @@ const EXTRA_PROJECTS = [
     desc: 'A full-stack Spring Boot web app for discovering and sharing membership perks across Canadian reward programs — authentication, HTMX-driven search and filtering, community voting and a REST API, deployed to Azure through GitHub Actions.',
     role: 'Built with a team of five; server-rendered Thymeleaf front end over a Spring Data JPA back end.',
     language: 'Java',
+    languages: ['Java', 'HTML', 'CSS'],
     html_url: 'https://github.com/JadHamzeh/SYSC4806A-project-Group-38',
     homepage: 'https://sysc4806group38assignment-hvesg2fhasdtb5aj.canadacentral-01.azurewebsites.net/',
     stargazers_count: 1,
@@ -76,10 +84,10 @@ const EXTRA_PROJECTS = [
 
 /* Minimal offline snapshot so the page is never empty. */
 const FALLBACK = [
-  { name: 'E-Commerce-Application', description: null, language: 'Java', stargazers_count: 0, forks_count: 0, html_url: `https://github.com/${USERNAME}/E-Commerce-Application`, homepage: null, pushed_at: '2026-06-09T01:26:59Z', created_at: '2026-03-09T15:07:11Z', topics: [], fork: false, archived: false },
-  { name: 'Finance-News-Ticker', description: null, language: 'HTML', stargazers_count: 0, forks_count: 0, html_url: `https://github.com/${USERNAME}/Finance-News-Ticker`, homepage: null, pushed_at: '2026-02-18T15:09:05Z', created_at: '2026-02-17T02:27:10Z', topics: [], fork: false, archived: false },
-  { name: 'FITNESS-APPLICATION', description: null, language: 'HTML', stargazers_count: 0, forks_count: 0, html_url: `https://github.com/${USERNAME}/FITNESS-APPLICATION`, homepage: null, pushed_at: '2024-05-14T09:36:39Z', created_at: '2024-04-13T15:34:47Z', topics: [], fork: false, archived: false },
-  { name: 'Card-Match-Game', description: 'Uses HTML, CSS AND Javascript to create a matching game', language: 'JavaScript', stargazers_count: 0, forks_count: 0, html_url: `https://github.com/${USERNAME}/Card-Match-Game`, homepage: null, pushed_at: '2023-04-03T20:38:17Z', created_at: '2023-04-03T17:23:31Z', topics: [], fork: false, archived: false }
+  { name: 'E-Commerce-Application', description: null, language: 'Java', languages: ['Java'], stargazers_count: 0, forks_count: 0, html_url: `https://github.com/${USERNAME}/E-Commerce-Application`, homepage: null, pushed_at: '2026-06-09T01:26:59Z', created_at: '2026-03-09T15:07:11Z', topics: [], fork: false, archived: false },
+  { name: 'Finance-News-Ticker', description: null, language: 'HTML', languages: ['HTML', 'C#', 'CSS'], stargazers_count: 0, forks_count: 0, html_url: `https://github.com/${USERNAME}/Finance-News-Ticker`, homepage: null, pushed_at: '2026-02-18T15:09:05Z', created_at: '2026-02-17T02:27:10Z', topics: [], fork: false, archived: false },
+  { name: 'FITNESS-APPLICATION', description: null, language: 'HTML', languages: ['HTML', 'Python'], stargazers_count: 0, forks_count: 0, html_url: `https://github.com/${USERNAME}/FITNESS-APPLICATION`, homepage: null, pushed_at: '2024-05-14T09:36:39Z', created_at: '2024-04-13T15:34:47Z', topics: [], fork: false, archived: false },
+  { name: 'Card-Match-Game', description: 'Uses HTML, CSS AND Javascript to create a matching game', language: 'JavaScript', languages: ['JavaScript', 'HTML', 'CSS'], stargazers_count: 0, forks_count: 0, html_url: `https://github.com/${USERNAME}/Card-Match-Game`, homepage: null, pushed_at: '2023-04-03T20:38:17Z', created_at: '2023-04-03T17:23:31Z', topics: [], fork: false, archived: false }
 ];
 
 /* GitHub's own language colours, for the little dots. */
@@ -116,6 +124,28 @@ function writeCache(data) {
   } catch { /* storage full or blocked — not important */ }
 }
 
+/* The repo list only names a single top language, so the breakdown comes from a
+   second call per repo. A repo that fails here still renders — it just falls
+   back to the single language GitHub already gave us. */
+async function fetchLanguages(repo) {
+  try {
+    const res = await fetch(repo.languages_url, { headers: { Accept: 'application/vnd.github+json' } });
+    if (!res.ok) throw new Error(`GitHub API responded ${res.status}`);
+    const bytes = await res.json();
+
+    const total = Object.values(bytes).reduce((sum, n) => sum + n, 0);
+    if (!total) return [];
+
+    return Object.entries(bytes)
+      .sort((a, b) => b[1] - a[1])
+      .filter(([, n], i) => i === 0 || n / total >= LANG_MIN_SHARE)
+      .slice(0, MAX_LANGS)
+      .map(([name]) => name);
+  } catch {
+    return [];
+  }
+}
+
 async function loadRepos() {
   const cached = readCache();
   if (cached) return { repos: cached, stale: false };
@@ -124,8 +154,13 @@ async function loadRepos() {
     const res = await fetch(API, { headers: { Accept: 'application/vnd.github+json' } });
     if (!res.ok) throw new Error(`GitHub API responded ${res.status}`);
     const data = await res.json();
-    writeCache(data);
-    return { repos: data, stale: false };
+
+    // Narrow to what actually gets rendered before spending a request per repo.
+    const mine = data.filter((r) => !r.fork && !HIDDEN.has(r.name.toLowerCase()));
+    await Promise.all(mine.map(async (r) => { r.languages = await fetchLanguages(r); }));
+
+    writeCache(mine);
+    return { repos: mine, stale: false };
   } catch (err) {
     console.warn('Falling back to bundled repo snapshot:', err.message);
     return { repos: FALLBACK, stale: true };
@@ -135,6 +170,13 @@ async function loadRepos() {
 /* ------------------------------------------------------------
    Rendering
    ------------------------------------------------------------ */
+
+/* Languages for a repo, biggest first. Falls back to GitHub's single top
+   language for anything the breakdown call didn't cover. */
+function langsOf(repo) {
+  if (repo.languages?.length) return repo.languages;
+  return repo.language ? [repo.language] : [];
+}
 
 function prettyName(repo) {
   if (repo.title) return repo.title;
@@ -162,7 +204,7 @@ function demoUrl(repo) {
 
 function cardHtml(repo, index) {
   const { text, placeholder } = description(repo);
-  const color = LANG_COLORS[repo.language] || '#8590a6';
+  const langs = langsOf(repo);
   const demo = demoUrl(repo);
   const isNew = Date.now() - new Date(repo.created_at) < 90 * 86400000;
 
@@ -187,7 +229,7 @@ function cardHtml(repo, index) {
       ${repo.role ? `<p class="card-role">${escapeHtml(repo.role)}</p>` : ''}
 
       <div class="card-meta">
-        ${repo.language ? `<span><i class="lang-dot" style="background:${color}"></i>${escapeHtml(repo.language)}</span>` : ''}
+        ${langs.map((lang) => `<span><i class="lang-dot" style="background:${LANG_COLORS[lang] || '#8590a6'}"></i>${escapeHtml(lang)}</span>`).join('')}
         ${repo.forks_count ? `<span title="Forks">⑂ ${repo.forks_count}</span>` : ''}
       </div>
 
@@ -208,9 +250,10 @@ function visibleRepos() {
   const q = state.query.toLowerCase();
   return state.repos
     .filter((r) => {
-      if (state.lang !== 'All' && r.language !== state.lang) return false;
+      // A chip matches any of the card's languages, not just the top one.
+      if (state.lang !== 'All' && !langsOf(r).includes(state.lang)) return false;
       if (!q) return true;
-      const haystack = [r.name, prettyName(r), r.description, r.language, r.role,
+      const haystack = [r.name, prettyName(r), r.description, ...langsOf(r), r.role,
                         ...(r.topics || []), description(r).text]
         .filter(Boolean).join(' ').toLowerCase();
       return haystack.includes(q);
@@ -240,7 +283,7 @@ function renderGrid() {
 }
 
 function renderFilters() {
-  const langs = [...new Set(state.repos.map((r) => r.language).filter(Boolean))].sort();
+  const langs = [...new Set(state.repos.flatMap(langsOf))].sort();
   const wrap = $('#filters');
 
   wrap.innerHTML = ['All', ...langs].map((lang) => {
@@ -280,7 +323,7 @@ function countUp(el, target) {
 
 /* The hero spec strip is optional — skip any counter that isn't on the page. */
 function renderStats() {
-  const langs = new Set(state.repos.map((r) => r.language).filter(Boolean)).size;
+  const langs = new Set(state.repos.flatMap(langsOf)).size;
   const repoEl = $('#stat-repos');
   const langEl = $('#stat-langs');
   if (repoEl) countUp(repoEl, state.repos.length);
@@ -358,11 +401,11 @@ async function main() {
 
   const { repos, stale } = await loadRepos();
 
-  const mine = repos.filter((r) => !r.fork && !HIDDEN.has(r.name.toLowerCase()));
+  // Forks and hidden repos are already dropped by loadRepos.
   const extraNames = new Set(EXTRA_PROJECTS.map((r) => r.name.toLowerCase()));
 
   // Curated entries win if a repo of the same name ever shows up under my account.
-  state.repos = [...EXTRA_PROJECTS, ...mine.filter((r) => !extraNames.has(r.name.toLowerCase()))];
+  state.repos = [...EXTRA_PROJECTS, ...repos.filter((r) => !extraNames.has(r.name.toLowerCase()))];
 
   renderStats();
   renderFilters();
