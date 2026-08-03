@@ -136,17 +136,6 @@ async function loadRepos() {
    Rendering
    ------------------------------------------------------------ */
 
-function timeAgo(iso) {
-  const days = Math.floor((Date.now() - new Date(iso)) / 86400000);
-  if (days <= 0) return 'today';
-  if (days === 1) return 'yesterday';
-  if (days < 30) return `${days} days ago`;
-  const months = Math.round(days / 30);
-  if (months < 12) return `${months} month${months > 1 ? 's' : ''} ago`;
-  const years = (days / 365).toFixed(1).replace('.0', '');
-  return `${years} year${years === '1' ? '' : 's'} ago`;
-}
-
 function prettyName(repo) {
   if (repo.title) return repo.title;
   const o = OVERRIDES[repo.name.toLowerCase()];
@@ -200,7 +189,6 @@ function cardHtml(repo, index) {
       <div class="card-meta">
         ${repo.language ? `<span><i class="lang-dot" style="background:${color}"></i>${escapeHtml(repo.language)}</span>` : ''}
         ${repo.forks_count ? `<span title="Forks">⑂ ${repo.forks_count}</span>` : ''}
-        <span title="Last push">Upd. ${timeAgo(repo.pushed_at || repo.updated_at)}</span>
       </div>
 
       <div class="card-links">
