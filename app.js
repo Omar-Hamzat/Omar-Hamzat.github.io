@@ -290,10 +290,13 @@ function countUp(el, target) {
   requestAnimationFrame(step);
 }
 
+/* The hero spec strip is optional — skip any counter that isn't on the page. */
 function renderStats() {
   const langs = new Set(state.repos.map((r) => r.language).filter(Boolean)).size;
-  countUp($('#stat-repos'), state.repos.length);
-  countUp($('#stat-langs'), langs);
+  const repoEl = $('#stat-repos');
+  const langEl = $('#stat-langs');
+  if (repoEl) countUp(repoEl, state.repos.length);
+  if (langEl) countUp(langEl, langs);
 }
 
 /* ------------------------------------------------------------
