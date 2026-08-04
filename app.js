@@ -261,17 +261,31 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+/* Split text into comparable words. `#` and `+` stay part of a word so "c#" and
+   "c++" survive; everything else (spaces, punctuation, dashes) separates. */
+function words(text) {
+  return text.toLowerCase().split(/[^a-z0-9#+]+/).filter(Boolean);
+}
+
+/* Whole-word search: every word typed has to appear as a complete word on the
+   card. Substring matching used to make "ml" pull in every HTML project. */
+function matchesQuery(repo, query) {
+  const haystack = new Set(words(
+    [repo.name, prettyName(repo), repo.description, ...filterTerms(repo), repo.role,
+     ...(repo.topics || []), description(repo).text]
+      .filter(Boolean).join(' ')
+  ));
+  return words(query).every((word) => haystack.has(word));
+}
+
 function visibleRepos() {
-  const q = state.query.toLowerCase();
+  const q = state.query;
   return state.repos
     .filter((r) => {
       // A chip matches any of the card's languages or tags, not just the top one.
       if (state.lang !== 'All' && !filterTerms(r).includes(state.lang)) return false;
       if (!q) return true;
-      const haystack = [r.name, prettyName(r), r.description, ...filterTerms(r), r.role,
-                        ...(r.topics || []), description(r).text]
-        .filter(Boolean).join(' ').toLowerCase();
-      return haystack.includes(q);
+      return matchesQuery(r, q);
     })
     .sort((a, b) => {
       // Featured projects lead, whatever the chosen sort.
