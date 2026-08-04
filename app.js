@@ -22,7 +22,7 @@ const NO_CHIP = new Set(['CSS']);
 
 /* Non-language chips, contributed by a project's `tags`. Colour is only used
    for the chip dot, so anything not listed here just renders without one. */
-const TAG_COLORS = { 'Machine Learning': '#ff4d1c' };
+const TAG_COLORS = { ML: '#ff4d1c' };
 
 /* Repos to hide from the grid (e.g. the portfolio repo itself). */
 const HIDDEN = new Set([`${USERNAME.toLowerCase()}.github.io`]);
@@ -61,7 +61,7 @@ const EXTRA_PROJECTS = [
     featured: true,
     language: 'Python',
     languages: ['Python'],
-    tags: ['Machine Learning'],
+    tags: ['ML'],
     html_url: 'https://github.com/anochronos/capstone-CUVision-master',
     homepage: null,
     stargazers_count: 0,
