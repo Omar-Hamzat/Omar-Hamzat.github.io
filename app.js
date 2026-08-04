@@ -16,6 +16,14 @@ const CACHE_TTL = 60 * 60 * 1000; // 1 hour — keeps us well inside the 60 req/
 const MAX_LANGS = 4;
 const LANG_MIN_SHARE = 0.05;
 
+/* Languages that stay on the cards but don't earn a filter chip — they turn up
+   in almost every web project, so filtering by them says little. */
+const NO_CHIP = new Set(['CSS']);
+
+/* Non-language chips, contributed by a project's `tags`. Colour is only used
+   for the chip dot, so anything not listed here just renders without one. */
+const TAG_COLORS = { 'Machine Learning': '#ff4d1c' };
+
 /* Repos to hide from the grid (e.g. the portfolio repo itself). */
 const HIDDEN = new Set([`${USERNAME.toLowerCase()}.github.io`]);
 
@@ -42,7 +50,7 @@ const OVERRIDES = {
 
 /* Projects that don't live under my own account (team repos, capstones) and so
    never come back from the API call above. Same shape as a GitHub repo object,
-   plus `title`, `desc`, `role` and `badge`. Add to this list by hand. */
+   plus `title`, `desc`, `role`, `badge` and `tags`. Add to this list by hand. */
 const EXTRA_PROJECTS = [
   {
     name: 'capstone-CUVision-master',
@@ -53,6 +61,7 @@ const EXTRA_PROJECTS = [
     featured: true,
     language: 'Python',
     languages: ['Python'],
+    tags: ['Machine Learning'],
     html_url: 'https://github.com/anochronos/capstone-CUVision-master',
     homepage: null,
     stargazers_count: 0,
@@ -178,6 +187,12 @@ function langsOf(repo) {
   return repo.language ? [repo.language] : [];
 }
 
+/* Everything a chip or the search box can match a repo on: its languages plus
+   any hand-written tags. */
+function filterTerms(repo) {
+  return [...langsOf(repo), ...(repo.tags || [])];
+}
+
 function prettyName(repo) {
   if (repo.title) return repo.title;
   const o = OVERRIDES[repo.name.toLowerCase()];
@@ -250,10 +265,10 @@ function visibleRepos() {
   const q = state.query.toLowerCase();
   return state.repos
     .filter((r) => {
-      // A chip matches any of the card's languages, not just the top one.
-      if (state.lang !== 'All' && !langsOf(r).includes(state.lang)) return false;
+      // A chip matches any of the card's languages or tags, not just the top one.
+      if (state.lang !== 'All' && !filterTerms(r).includes(state.lang)) return false;
       if (!q) return true;
-      const haystack = [r.name, prettyName(r), r.description, ...langsOf(r), r.role,
+      const haystack = [r.name, prettyName(r), r.description, ...filterTerms(r), r.role,
                         ...(r.topics || []), description(r).text]
         .filter(Boolean).join(' ').toLowerCase();
       return haystack.includes(q);
@@ -283,14 +298,16 @@ function renderGrid() {
 }
 
 function renderFilters() {
-  const langs = [...new Set(state.repos.flatMap(langsOf))].sort();
+  const terms = [...new Set(state.repos.flatMap(filterTerms))]
+    .filter((t) => !NO_CHIP.has(t))
+    .sort();
   const wrap = $('#filters');
 
-  wrap.innerHTML = ['All', ...langs].map((lang) => {
-    const color = LANG_COLORS[lang];
-    return `<button type="button" class="chip" data-lang="${escapeHtml(lang)}"
-              aria-pressed="${lang === state.lang}">
-              ${color ? `<i class="dot" style="background:${color}"></i>` : ''}${escapeHtml(lang)}
+  wrap.innerHTML = ['All', ...terms].map((term) => {
+    const color = LANG_COLORS[term] || TAG_COLORS[term];
+    return `<button type="button" class="chip" data-lang="${escapeHtml(term)}"
+              aria-pressed="${term === state.lang}">
+              ${color ? `<i class="dot" style="background:${color}"></i>` : ''}${escapeHtml(term)}
             </button>`;
   }).join('');
 
