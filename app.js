@@ -267,15 +267,16 @@ function words(text) {
   return text.toLowerCase().split(/[^a-z0-9#+]+/).filter(Boolean);
 }
 
-/* Whole-word search: every word typed has to appear as a complete word on the
-   card. Substring matching used to make "ml" pull in every HTML project. */
+/* Search matches from the start of a word, so results narrow as you type:
+   "ht" finds HTML, "m" finds ML. Matching mid-word is what made "ml" pull in
+   every HTML project, so a word typed has to begin one on the card. */
 function matchesQuery(repo, query) {
-  const haystack = new Set(words(
+  const haystack = words(
     [repo.name, prettyName(repo), repo.description, ...filterTerms(repo), repo.role,
      ...(repo.topics || []), description(repo).text]
       .filter(Boolean).join(' ')
-  ));
-  return words(query).every((word) => haystack.has(word));
+  );
+  return words(query).every((word) => haystack.some((w) => w.startsWith(word)));
 }
 
 function visibleRepos() {
