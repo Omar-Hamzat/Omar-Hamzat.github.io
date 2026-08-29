@@ -22,7 +22,7 @@
 
   <!-- Bump ?v= on every styles.css / app.js change so returning visitors don't
        run a stale copy out of browser cache. Task: "Bump asset cache version". -->
-  <link rel="stylesheet" href="styles.css?v=15">
+  <link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body>
   <a class="skip-link" href="#projects">Skip to work</a>
@@ -62,13 +62,13 @@
       <h2 class="section-head"><span>About</span></h2>
 
       <!-- PORTRAIT SLOT
-           Drop a photo of yourself at assets/portrait.jpg and it appears here.
-           Square or 4:5 portrait crop, at least 600px on the short edge.
-           Until the file exists, a labelled placeholder shows instead. -->
+           The photo at assets/image.jpg renders at whatever crop it is saved
+           with, so keep the width/height attributes below in step with the
+           file. If it goes missing, a labelled placeholder shows instead. -->
       <div class="identity">
         <figure class="portrait" id="portrait">
           <img src="assets/image.jpg" alt="Omar Hamzat"
-               width="640" height="800" loading="lazy"
+               width="622" height="604" loading="lazy"
                onerror="this.hidden=true;document.getElementById('portrait').classList.add('is-empty');">
           <figcaption>Omar Hamzat &mdash; Developer</figcaption>
         </figure>
@@ -192,6 +192,6 @@
     <button class="to-top" id="to-top" type="button" aria-label="Back to top">&uarr; Top</button>
   </footer>
 
-  <script src="app.js?v=15"></script>
+  <script src="app.js?v=16"></script>
 </body>
 </html>
