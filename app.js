@@ -230,7 +230,7 @@ function cardHtml(repo, index) {
   let badge = '';
   if (repo.badge) badge = repo.badge;
   else if (repo.archived) badge = 'Archived';
-  else if (isNew) badge = 'New';
+  // else if (isNew) badge = 'New';
 
   const num = String(index + 1).padStart(3, '0');
 
