@@ -46,8 +46,8 @@ const OVERRIDES = {
     title: 'Card Match Game',
     desc: 'A memory matching game built with HTML, CSS and JavaScript.'
   },
-  'SockChat':{
-    title: 'SockChat',
+  'sockchat':{
+    title: 'sockchat',
     desc: 'A multi-client, multithreaded TCP chat application written in C. Implements a thread-per-connection server using raw POSIX sockets and pthreads, broadcasting messages in real time between concurrent command-line clients. Includes a shared static library for socket setup and address handling.'
   }
 };
@@ -225,7 +225,7 @@ function cardHtml(repo, index) {
   const { text, placeholder } = description(repo);
   const langs = langsOf(repo);
   const demo = demoUrl(repo);
-  const isNew = Date.now() - new Date(repo.created_at) < 90 * 86400000;
+  // const isNew = Date.now() - new Date(repo.created_at) < 90 * 86400000;
 
   let badge = '';
   if (repo.badge) badge = repo.badge;
