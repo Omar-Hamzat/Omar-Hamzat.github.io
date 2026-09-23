@@ -47,7 +47,7 @@ const OVERRIDES = {
     desc: 'A memory matching game built with HTML, CSS and JavaScript.'
   },
   'sockchat':{
-    title: 'sockchat',
+    title: 'SockChat',
     desc: 'A multi-client, multithreaded TCP chat application written in C. Implements a thread-per-connection server using raw POSIX sockets and pthreads, broadcasting messages in real time between concurrent command-line clients. Includes a shared static library for socket setup and address handling.'
   }
 };
